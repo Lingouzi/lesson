@@ -11,6 +11,8 @@
     <modules>
         <module>lesson001-volatile</module>
         <module>lesson002-self-increasing</module>
+        <module>lesson003-singleton</module>
+        <module>lesson004-class-instantiation</module>
     </modules>
 
 
