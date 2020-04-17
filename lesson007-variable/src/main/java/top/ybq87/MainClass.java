@@ -1,8 +1,5 @@
 package top.ybq87;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 /**
  * @author ly
  * @blog http://www.ybq87.top
@@ -16,7 +13,7 @@ public class MainClass {
     public static void main(String[] args) {
         // 局部变量 m1
         Variable m1 = new Variable();
-    
+        
         // 局部变量 m2
         Variable m2 = new Variable();
         System.out.println(m1.i + "," + m1.j + "," + m1.s);
@@ -43,7 +40,7 @@ class Variable {
     
     {
         // 局部变量
-        int i = 1;
+        final int i = 1;
         // 就近原则，这个 i 指向的是上面这个 i
         this.i++;
         j++;
