@@ -46,7 +46,7 @@ package top.ybq87;
  *          4.2.3、this.func(params..);访问类中的成员方法时
  *              4.2.3.1、子类重写了父类方法，那么这里就是调用的子类的方法。
  *              4.2.3.2、子类没有重写，那么这里调用的还是父类自己的方法。
- *          4.2.4、this;
+ *          4.2.4、this; 当前类【或者叫运行时类型】对象的引用
  *              4.2.4.1、这个怎么理解，比如在父类的构造器 System.out.println(this); 那么这个 this 其实是指向的子类。
  *              4.2.4.2、或者 System.out.println(this.getClass()); this 也是子类。
  *
@@ -74,10 +74,10 @@ package top.ybq87;
 public class MainClass {
     
     public static void main(String[] args) {
+        Father son1 = new Son();
+        System.out.println();
         Son s1 = new Son();
         System.out.println();
         Son s2 = new Son();
-    
-        So s = new So();
     }
 }

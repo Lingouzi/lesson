@@ -11,7 +11,7 @@ package top.ybq87;
  */
 public class Father {
     
-    private int i = test();
+    private int i = this.test(this);
     
     private static int j = method();
     
@@ -19,16 +19,19 @@ public class Father {
         System.out.println("1 父类静态代码块");
     }
     
+    private String str;
+    
     Father() {
-        System.out.println("2 父类无参构造器");
+        this.str = "father";
+        System.out.println("2 父类无参构造器 >>> str:" + this.str);
     }
     
     {
         System.out.println("3 父类代码块");
     }
     
-    public int test() {
-        System.out.println("4 父类 test 方法");
+    public int test(Father father) {
+        System.out.println("4 父类 test 方法 father.getClass:" + father.getClass());
         return 1;
     }
     

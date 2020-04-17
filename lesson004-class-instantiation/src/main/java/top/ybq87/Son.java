@@ -28,7 +28,7 @@ package top.ybq87;
  */
 public class Son extends Father {
     
-    private int i = test();
+    private int i = this.test(this);
     
     private static int j = method();
     
@@ -36,10 +36,13 @@ public class Son extends Father {
         System.out.println("6 子类静态代码块");
     }
     
+    private String str;
+    
     Son() {
         // 这句写或者不写，都一定会执行，子类构造器一定会调用父类构造器。
         // super();
-        System.out.println("7 子类无参构造函数");
+        this.str = "son";
+        System.out.println("7 子类无参构造函数 >>> str:" + this.str);
     }
     
     {
@@ -47,8 +50,8 @@ public class Son extends Father {
     }
     
     @Override
-    public int test() {
-        System.out.println("9 子类 test 方法");
+    public int test(Father father) {
+        System.out.println("9 子类 test 方法 " + father.getClass());
         return 1;
     }
     
@@ -56,6 +59,5 @@ public class Son extends Father {
         System.out.println("10 子类 method 方法");
         return 1;
     }
-    
     
 }

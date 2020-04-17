@@ -13,7 +13,9 @@
         <module>lesson002-self-increasing</module>
         <module>lesson003-singleton</module>
         <module>lesson004-class-instantiation</module>
+        <module>lesson005-method-param</module>
+        <module>lesson006-recursive-iterate</module>
+        <module>lesson007-variable</module>
     </modules>
-
 
 </project>
