@@ -16,6 +16,7 @@
         <module>lesson005-method-param</module>
         <module>lesson006-recursive-iterate</module>
         <module>lesson007-variable</module>
+        <module>lesson008-springmvc-0xml</module>
     </modules>
 
 </project>
