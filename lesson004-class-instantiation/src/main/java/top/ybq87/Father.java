@@ -11,7 +11,7 @@ package top.ybq87;
  */
 public class Father {
     
-    private int i = this.test(this);
+    private int i = test(this);
     
     private static int j = method();
     
@@ -22,8 +22,9 @@ public class Father {
     private String str;
     
     Father() {
-        this.str = "father";
-        System.out.println("2 父类无参构造器 >>> str:" + this.str);
+        str = "father";
+        System.out.println(getClass().getSuperclass().getName());
+        System.out.println("2 父类无参构造器 >>> str:" + str);
     }
     
     {

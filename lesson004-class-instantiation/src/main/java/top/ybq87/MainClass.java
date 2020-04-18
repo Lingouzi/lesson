@@ -75,7 +75,8 @@ public class MainClass {
     
     public static void main(String[] args) {
         Father son1 = new Son();
-        System.out.println();
+        System.out.println(son1.getClass().getName());
+        
         Son s1 = new Son();
         System.out.println();
         Son s2 = new Son();
