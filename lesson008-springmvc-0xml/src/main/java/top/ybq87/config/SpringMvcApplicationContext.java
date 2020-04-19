@@ -2,6 +2,7 @@ package top.ybq87.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * @author ly
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020/4/18
  */
 @Configuration
+@EnableWebMvc
 @ComponentScan(value = {"top.ybq87.controller"})
 public class SpringMvcApplicationContext {
     
