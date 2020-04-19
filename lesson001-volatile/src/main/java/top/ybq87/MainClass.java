@@ -1,17 +1,16 @@
 package top.ybq87;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 没有被 volatile 修饰的
  */
 class MyDataWithOutVolatile {
-
+    
     Integer i = 0;
-
+    
     public void add() {
-        this.i = 2;
+        i = 2;
     }
 }
 
@@ -19,23 +18,23 @@ class MyDataWithOutVolatile {
  * 被 volatile 修饰的，保证可见性测试
  */
 class MyDataWithVolatile {
-
+    
     volatile Integer i = 0;
-
+    
     public void add() {
-        this.i = 2;
+        i = 2;
     }
 }
 
 class MyDataTest {
-
+    
     volatile int i = 0;
-
+    
     /**
      * 为什么 atomic 能够保证原子性，因为底层是使用 unsafe 操作的。
      */
     AtomicInteger j = new AtomicInteger(0);
-
+    
     public void addPlus() {
         i++;
         /*
@@ -46,7 +45,7 @@ class MyDataTest {
         PUTFIELD top/ybq87/MyDataTest.i : I
          */
     }
-
+    
     public void addAtomic() {
         // j++，
         j.getAndIncrement();
@@ -54,20 +53,58 @@ class MyDataTest {
 }
 
 class SingletonWithOutVolatile {
-
-    private static SingletonWithOutVolatile instacnce;
-
+    
+    private static SingletonWithOutVolatile instance;
+    
     public SingletonWithOutVolatile() {
         System.out.println("SingletonWithOutVolatile 我被创建");
     }
-
-    public static SingletonWithOutVolatile getInstacnce() {
-        if (instacnce == null) {
-            instacnce = new SingletonWithOutVolatile();
+    
+    public static SingletonWithOutVolatile getInstance() {
+        if (instance == null) {
+            instance = new SingletonWithOutVolatile();
         }
-        return instacnce;
+        return instance;
     }
 }
+
+/**
+ * DCL, double check lock, 双端检索
+ * 如果不加 volatile时，还可能出现问题的。
+ * 我们分析下  instance = new SingletonDclWithOutVolatile(); 她可以分解为 3 步
+ * 1、划分内存
+ * 2、初始化对象
+ * 3、将 instance 指向内存地址（此时 instance != null）
+ * 这是正常的顺序，但是 2 和 3 没有数据依赖，可能出现指令重排优化。导致：
+ * 1、3、2 的顺序执行。也就是说，在 instance 初始化之前将地址赋值给了他导致 instance!=null
+ * 假设在 2 完成之前，另外一个线程抢到资源，它去使用了这个 instance，因为它不为 null，但是没有初始化，
+ * 所以操作就会出错。
+ *
+ */
+class SingletonDclWithOutVolatile {
+    
+    private SingletonDclWithOutVolatile() {
+        System.out.println("SingletonDclWithOutVolatile 构建");
+    }
+    
+    // 非禁止指令重排，可能出现 instance != null，但是没有初始化就被别的线程使用导致报错。
+    // public static SingletonDclWithOutVolatile instance;
+    
+    // 多线程环境下 禁止指令重排
+    public static volatile SingletonDclWithOutVolatile instance;
+    
+    public static SingletonDclWithOutVolatile getInstance() {
+        if (instance == null) {
+            synchronized (SingletonDclWithOutVolatile.class) {
+                if (instance == null) {
+                    instance = new SingletonDclWithOutVolatile();
+                }
+            }
+        }
+        return instance;
+    }
+}
+
 
 /**
  * 1、验证 volatile 的可见性
@@ -93,7 +130,7 @@ class SingletonWithOutVolatile {
  * @date 2020/4/15
  */
 public class MainClass {
-
+    
     // 1. 不加 volatile 关键字，数据不保证可见性
     // public static void main(String[] args) {
     //     MyDataWithOutVolatile my = new MyDataWithOutVolatile();
@@ -106,7 +143,7 @@ public class MainClass {
     //     }
     //     System.out.println("main" + my.i);
     // }
-
+    
     // 2. 有 volatile 关键字 保证可见性
     // public static void main(String[] args) {
     //     MyDataWithVolatile myData = new MyDataWithVolatile();
@@ -123,7 +160,7 @@ public class MainClass {
     //     }
     //     System.out.println("main:" + myData.i);
     // }
-
+    
     // 3. atomic 保证原子操作，多线程没问题
     // public static void main(String[] args) {
     //     MyDataTest myDataTest = new MyDataTest();
@@ -150,7 +187,7 @@ public class MainClass {
     //     System.out.println(Thread.currentThread().getName() + ":" + myDataTest.j);
     //
     // }
-
+    
     // 4. 单线程下的 volatile 单例没有问题，多线程下出现异常。
     // public static void main(String[] args) {
     //     // 单线程单例没有错误。
@@ -161,8 +198,20 @@ public class MainClass {
     //     for (int i = 0; i < 10; i++) {
     //         new Thread(() -> {
     //             System.out.println(
-    //                     Thread.currentThread().getName() + SingletonWithOutVolatile.getInstacnce());
+    //                     Thread.currentThread().getName() + SingletonWithOutVolatile.getInstance());
     //         },"thread" + i).start();
     //     }
     // }
+    
+    // 5、dcl 测试
+    public static void main(String[] args) {
+        // 多线程模式下，虽然很多次不会出现问题，但是可能 99.999% 正常，
+        // 但是因为存在指令重排，所以还是会出现问题
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                System.out.println(
+                        Thread.currentThread().getName() + SingletonDclWithOutVolatile.getInstance());
+            }, "thread" + i).start();
+        }
+    }
 }
