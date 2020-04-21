@@ -60,6 +60,16 @@ package top.ybq87;
  *          比如 Son s1 = new Son();那么 Son 就是 对象的运行时类
  * 5、编译时类型和运行时类型
  *
+ * 6. 题目
+ * Student s = new Student(); 做了哪些事情:
+ * 6.1 加载 Student.class 文件到内存
+ * 6.2 在栈内存为 s 开辟空间
+ * 6.3 在堆内存为 student 对象开辟空间
+ * 6.4 student 成员变量进行默认初始化
+ * 6.5 student 成员变量进行显示初始化
+ * 6.6 构造方法对 student 对象成员变量赋值
+ * 6.7 student 初始化完毕,将对象地址赋值给变量 s
+ *
  * 参考：
  * 1、this 关键字：https://blog.csdn.net/ccpat/article/details/44515335
  * 2、super 和 this：https://bbs.csdn.net/topics/370010127
