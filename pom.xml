@@ -20,6 +20,8 @@
         <module>lesson009-cas</module>
         <module>lesson010-collections</module>
         <module>lesson011-juc</module>
+        <module>lesson012-thread</module>
+        <module>lesson013-数据结构与算法</module>
     </modules>
 
 </project>
