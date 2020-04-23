@@ -23,6 +23,7 @@
         <module>lesson012-thread</module>
         <module>lesson013-数据结构与算法</module>
         <module>lesson014-jvm</module>
+        <module>document</module>
     </modules>
 
 </project>
