@@ -1,5 +1,7 @@
 package top.ybq87;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 1. 什么是垃圾? 怎么判断是垃圾? 什么是  GC Root?
  * 从 gc root 的对象作为起点, 从它开始向下搜索,如果一个对象链路可达,表示活跃,否则就是是垃圾;
@@ -54,6 +56,26 @@ package top.ybq87;
  * 5.5、OutOfMemoryError：unable to create new native thread
  * 5.6、OutOfMemoryError：Metaspace
  *
+ * 6、生产环境服务器变慢，诊断思路和性能评估？
+ * 6.1、整机性能 top，看 cpu 和内存，load average：1，5，15 分钟负载，平均值大于 60%，说明系统负担重
+ *      uptime ：简化命令
+ * 6.2、cpu：vmstat -n 2 3 查看 cpu
+ *      mpstat -P ALL 2 所有 cpu 进程数
+ *      pidstat
+ * 6.3、free -m :单位为 m
+ * 6.4、iostat：磁盘 io，最后一个参数看磁盘率
+ * 6.5、ifstat：网络 io
+ *
+ * 7、生产环境 cpu 占用过高，怎么定位
+ * 7.1、top 找到占用高的 pid
+ * 7.2、jps 或者 ps -ef，找到程序
+ * 7.3、定位线程或者代码，哪一行： ps -mp pid -o THREAD,tid,time 找到线程 id
+ * 7.4、线程 id 转为 16 进制格式：printf "%x\n" 线程id
+ * 7.5、jstack pid | grep tid -A60，打印前 60 行
+ * 7.6、找到问题。。
+ *
+ * 8、
+ *
  * @author ly
  * @blog http://www.ybq87.top
  * @github https://github.com/Lingouzi
@@ -62,9 +84,6 @@ package top.ybq87;
  * @date 2020/4/21
  */
 public class MainClass {
-    
     public static void main(String[] args) {
-        byte[] bytes = new byte[10 * 1024 * 1024];
-        
     }
 }
