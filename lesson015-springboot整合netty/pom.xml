@@ -11,5 +11,12 @@
     
     <artifactId>lesson015-springboot整合netty</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.43.Final</version>
+        </dependency>
+    </dependencies>
 
 </project>
