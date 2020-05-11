@@ -24,6 +24,8 @@
         <module>lesson013-数据结构与算法</module>
         <module>lesson014-jvm</module>
         <module>lesson015-springboot整合netty</module>
+        <module>lesson016-design-patterns</module>
+        <module>lesson017-sort</module>
     </modules>
 
 </project>
