@@ -1,5 +1,6 @@
 package top.ybq87;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,6 +33,19 @@ import java.util.concurrent.TimeUnit;
  元空间并不在虚拟机中,而是使用本地内存
  *
  * 3、gc 日志阅读
+ * 使用 System.gc() 之后打印这个
+ * [GC (System.gc()) [PSYoungGen: 2662K->496K(38400K)] 2662K->504K(125952K), 0.0115382 secs] [Times: user=0.00 sys=0.00, real=0.02 secs]
+ * [Full GC (System.gc()) [PSYoungGen: 496K->0K(38400K)] [ParOldGen: 8K->402K(87552K)] 504K->402K(125952K), [Metaspace: 3087K->3087K(1056768K)], 0.0127579 secs] [Times: user=0.01 sys=0.00, real=0.01 secs]
+ *      标识 gc        [年轻代:大小从496K清理为0k(一共 38400K)][老年代:8k涨到 402k(一共87552K)] heap区大小(总大小)    [元空间大小:基本不变(总大小1g)]            耗时
+ * Heap
+ *  PSYoungGen      total 38400K, used 333K [0x0000000795580000, 0x0000000798000000, 0x00000007c0000000)
+ *   eden space 33280K, 1% used [0x0000000795580000,0x00000007955d34a8,0x0000000797600000)
+ *   from space 5120K, 0% used [0x0000000797600000,0x0000000797600000,0x0000000797b00000)
+ *   to   space 5120K, 0% used [0x0000000797b00000,0x0000000797b00000,0x0000000798000000)
+ *  ParOldGen       total 87552K, used 402K [0x0000000740000000, 0x0000000745580000, 0x0000000795580000)
+ *   object space 87552K, 0% used [0x0000000740000000,0x0000000740064bc8,0x0000000745580000)
+ *  Metaspace       used 3094K, capacity 4496K, committed 4864K, reserved 1056768K
+ *   class space    used 339K, capacity 388K, committed 512K, reserved 1048576K
  *
  * 4、强/软/弱/虚 引用
  *    4.1 应用: 读取图片的时候, gc 时回收图片信息.
@@ -84,6 +98,23 @@ import java.util.concurrent.TimeUnit;
  * @date 2020/4/21
  */
 public class MainClass {
+    
+    static String s0 = "0123456789";
+    static String s1 = "0123456789";
+    
     public static void main(String[] args) {
+        String s2 = s1.substring(5);
+        String s3 = new String(s2);
+        String s4 = new String(s3.toCharArray());
+        s0 = null;
+        // 加或者不加下面一句，堆区剩余的字符个数多少？
+        // s2 = null;
+        System.gc();
+        
+        // try {
+        //     System.in.read();
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
     }
 }
