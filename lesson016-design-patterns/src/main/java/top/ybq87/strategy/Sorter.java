@@ -17,11 +17,11 @@ public class Sorter {
     public void sort(int[] arr) {
         int len = arr.length;
         for (int i = 0; i < len - 1; i++) {
-            int minPos = i;
+            int min = i;
             for (int j = i + 1; j < len; j++) {
-                minPos = arr[j] < arr[minPos] ? j : minPos;
+                min = arr[j] < arr[min] ? j : min;
             }
-            swap(arr, i, minPos);
+            swap(arr, i, min);
         }
     }
     
