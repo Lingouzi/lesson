@@ -17,45 +17,118 @@ public class QuickSort {
      * @param args
      */
     public static void main(String[] args) {
-        int[] arr = {5, 2, 3, 7, 1, 6, 4, 9, 8, 0};
-        sort(arr);
+        int[] arr = {5, 2, 3, 7, 1, 6, 3, 5, 3, 4, 10, 24, 16, 9, 8, 0};
+        // sort(arr);
+        // System.out.println(Arrays.toString(arr));
+        
+        // 第二种快速排序的思路
+        sort2(arr, 0, arr.length - 1);
         System.out.println(Arrays.toString(arr));
+        
     }
     
     /**
      * 思路：
-     * 2 重循环，大循环的时候相当于是移动数组的角标，比如原来数组是：
-     * i = 0，tmpLen = 10，arr = {5, 2, 3, 7, 1, 6, 4, 9, 8, 0}
-     * 相当于一个小数组，第一次找到了最小数 0，然后交换到头，第二次进入循环时；在运算上忽略第一位的，
-     * 那么不就是下面这样
-     * i = 1，tmpLen = 9，arr = {2,3,7,1,6,4,9,8,5} // 之前的 0 和 5 交换，然后第一位的 0 被移除
-     * i = 2，tmpLen = 8，arr = {3,7,2,6,4,9,8,5} // 2 和 1 交换，然后 1 移除
+     * 以起点为基数，数组的开始节点为 left，数组结尾为 right，
+     * 先从 right 开始往左，找到第一个比基数小的数，记住他的位置 i
+     * 然后从 left 开始往右，找到第一个大于等于基数的数，记住他的位置 j
+     * 然后交换 i 和 j，
+     * 然后继续从 right 上次的位置的 i - 1 处开始往左找第一个比基数小的数，记录位置 i
+     * 然后从 left 上次的位置 j + 1 开始往右找到第一个大于等于基数的数，记住位置 j
+     * 交换 i 和 j，
      * ...
+     * 以上查找过程中，只要有一个查询过程中 i <= j 就停止查找。
+     * 这样排列后，基数左侧的就都比他小，右侧的都比他大。
+     * 然后将划分的数组左侧右侧的再次迭代排序就得到最后的正确排序了
      * @param arr
      */
-    private static void sort(int[] arr) {
-        // 这里用 length - 1 其实是一层优化，因为最后一轮的时候，其实数组只有一个数了，就是最大（小）的那个了，不需要再对比了。
-        for (int i = 0; i < arr.length - 1; i++) {
-            int min = i;
-            // 从 i + 1 开始循环，假设第 1 个位置就是最小值，当进入第二次循环的时候，因为第一位数据已经是最小的了
-            for (int j = i + 1; j < arr.length; j++) {
-                // 当小循环中遇到比当前值还小的时候，记录这个位置。
-                min = arr[j] < arr[min] ? j : min;
+    private static void sort2(int[] arr, int start, int end) {
+        int base = arr[start];
+        int left = start, right = end;
+        // 从最右边往左找的话，因为要记录小的数的位置，所以需要一个变量 i
+        // 只要 2 个位置不碰撞，那么就一直找。
+        while (right > left) {
+            // 第一步，从右往左找, 主要当前 arr[right] 是比基数大的，就继续往下找，记住 right 的值要减
+            while (left < right && arr[right] > base) {
+                //
+                right--;
             }
-            // 交换一下位置
-            swap(arr, i, min);
+            // 如果跳出的循环，说明找到了一个比基数小的数，而且得到了她的位置 right
+            
+            // 第二步，从左往右找，找到大于基数的，就停止，
+            while (left < right && arr[left] < base) {
+                left++;
+            }
+            // 保证相同的数过滤掉，步进加 1.（不判定会导致死循环）
+            if (left < right && arr[left] == arr[right]) {
+                left++;
+            }
+            // 然后交换 2 个位置的值。
+            swap(arr, left, right);
+        }
+        // 得到左边的和右边的
+        if (left - 1 > start) {
+            sort2(arr, start, left - 1);
+        }
+        if (left + 1 < end) {
+            sort2(arr, left + 1, end);
         }
     }
     
     /**
-     * 交换
+     * 思路
+     * 选定一个基准数，在数组中找到比他小的排到基准数的左边，
+     * 找到比基准数大的数，排到右边
+     * 然后 2 边的数据再次递归，最后得到正确的数。
+     *
      * @param arr
-     * @param i
-     * @param j
      */
+    private static void sort(int[] arr) {
+        quickSort(arr, 0, arr.length - 1);
+    }
+    
+    private static void quickSort(int[] arr, int left, int right) {
+        // 如果 2 个数的角标没有重合
+        if (left < right) {
+            // 得到基数的角标
+            int partitionIndex = partition(arr, left, right);
+            // 计算左侧的
+            quickSort(arr, left, partitionIndex - 1);
+            // 计算右侧的
+            quickSort(arr, partitionIndex + 1, right);
+        }
+    }
+    
+    /**
+     * 将数组按照基数排序，小于基数的在左边，大于基数的在右侧
+     * @param arr
+     * @param left
+     * @param right
+     * @return 返回基数最后的位置
+     */
+    private static int partition(int[] arr, int left, int right) {
+        // 基准值
+        int pivot = left;
+        // 记录遇到的比基数大的数据的位置，用来和右侧比基数小的数据交换的
+        int index = pivot + 1;
+        // 从 第 index = 1 的数据开始往右循环
+        for (int i = index; i <= right; i++) {
+            // 第一次 if 不成立的条件是找到了第一个比基数大的数据，然后记录到了这个数的 index。
+            // 下次循环到第一个比他小的数据时，交换大数和小数的位置。
+            // 然后 index 继续找第一个比基数大的数。
+            if (arr[i] < arr[pivot]) {
+                swap(arr, i, index);
+                index++;
+            }
+        }
+        swap(arr, pivot, index - 1);
+        return index - 1;
+    }
+    
     private static void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
+    
 }
