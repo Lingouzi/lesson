@@ -14,16 +14,11 @@ import java.util.Arrays;
 public class StrategyMain {
     
     public static void main(String[] args) {
-        // 对 a 排序
-        int[] a = {9, 2, 4, 1, 5, 6};
-        // 排序
-        Sorter sorter = new Sorter();
-        /*
-        对 int 型的数组排序，那么如果要对 double 排序呢？
-         */
-        sorter.sort(a);
-        // 打印
-        System.out.println(Arrays.toString(a));
+        int[] arr = {9, 2, 4, 1, 5, 6};
+        // 使用快速排序方法
+        StrategyContext context = new StrategyContext(new QuickSorter());
         
+        context.sort(arr);
+        System.out.println(Arrays.toString(arr));
     }
 }

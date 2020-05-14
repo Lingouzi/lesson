@@ -1,10 +1,5 @@
 package top.ybq87.strategy;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * @author ly
  * @blog http://www.ybq87.top
@@ -13,11 +8,13 @@ import lombok.NoArgsConstructor;
  * @wechat ly19870316 / 公众号：林子曰
  * @date 2020/5/11
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Car {
+public class QuickSorter implements Strategy {
     
-    private Integer weight;
+    /**
+     * 快速排序
+     * @param arr 待排序的数组
+     */
+    @Override
+    public void sort(int[] arr) {
+    }
 }
