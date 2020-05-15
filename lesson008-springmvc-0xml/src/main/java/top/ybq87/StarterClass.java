@@ -5,6 +5,7 @@ import top.ybq87.config.SpringMvcApplicationContext;
 import top.ybq87.config.SpringRootApplicationContext;
 
 /**
+ * 详细说明，请参考 spring 源码项目
  * @author ly
  * @blog http://www.ybq87.top
  * @github https://github.com/Lingouzi
