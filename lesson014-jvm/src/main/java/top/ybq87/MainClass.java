@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  *                      公式: -XX:属性 Key=属性值 value;
  缩写参数: -Xms1024m = -XX:InitizeHeapSize; -Xmx1024m = -XX:Max;
  jvm 常用参数:
- -Xms1024m: 设置 jvm 初始内存,可以与 xmx 相同,避免垃圾回收后重新分配内存. 默认为物理内存的 1/64;等价于 -XX:InitialHeampSize
+ -Xms1024m: 设置 jvm 初始内存,可以与 xmx 相同,避免垃圾回收后重新分配内存. 默认为物理内存的 1/64;等价于 -XX:InitialHeapSize
  -Xmx1024m: 设置 jvm 最大可用内存 默认为物理内存的 1/4;等价于-XX:MaxHeapSize
  -Xmn512m: 设置年轻代大小为 512m,
  整体 jvm 内存 = 年轻代+老年代+持久代[持久代固定为 64m]
