@@ -26,6 +26,9 @@ public class BridgePattern {
      * 这样一个结构中,display 所持有的引用就是相当于一个桥梁. display 和 countdisplay 都是功能层次.
      * impl 都是实现层次.他们通过这个持有的引用产生关联.
      *
+     * ***
+     * 这里的 display 可以改为抽象方法, displayImpl 可以改为接口,那么就更加抽象
+     *
      * @param args
      */
     public static void main(String[] args) {
