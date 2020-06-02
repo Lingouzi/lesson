@@ -44,9 +44,6 @@ public class SingleLinkedNode {
         SingleLinkedNode1 node = getEntrance(node1);
         System.out.println(node.getVal());
         
-        String nodeK = findNodeK(node1, 3);
-        System.out.println(nodeK);
-        
     }
     
     /**
